@@ -1,0 +1,22 @@
+apiVersion: kyverno.io/v1
+kind: Policy
+metadata:
+  name: block-signed-blue-policy
+spec:
+  validationFailureAction: enforce
+  background: false
+  webhookTimeoutSeconds: 30
+  failurePolicy: Fail
+  rules:
+    - name: signed-image-rule
+      match:
+        resources:
+          kinds:
+            - Pod
+      verifyImages:
+      - image: "058625519174.dkr.ecr.us-east-1.amazonaws.com/kitty:*"
+        key: |-
+          -----BEGIN PUBLIC KEY-----
+          MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEvgy2aWB/vYxsZJkDpYNfWRq5tSVe
+          iwRp7r3gbVE5m5Q8qdpcztB5qKg8cLf946bMHsc+45kJEJegj0o5oCEbjA==
+          -----END PUBLIC KEY-----
