@@ -65,8 +65,9 @@ jobs:
     - name: Sign the image with cosign
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        COSIGN_KEY: ${{secrets.COSIGN_KEY}}
       run: |
-        echo "${{secrets.COSIGN_KEY}}" > /tmp/cosign.key
+        echo $COSIGN_KEY > /tmp/cosign.key
         echo '__________________________________________________________________________'
         cat /tmp/cosign.key
         echo '__________________________________________________________________________'
