@@ -65,10 +65,13 @@ jobs:
     - name: Sign the image with cosign
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: kitty
+        IMAGE_TAG: latest
         COSIGN_KEY: ${{secrets.COSIGN_KEY}}
       run: |
-        echo $COSIGN_KEY > /tmp/cosign.key
-        echo '__________________________________________________________________________'
+        'echo "$COSIGN_KEY" > /tmp/cosign.key'
+        echo '________________________________________________________________________________________________'
         cat /tmp/cosign.key
-        echo '__________________________________________________________________________'
-        echo -n "${{secrets.COSIGN_PASSWORD}}" | cosign sign --key /tmp/cosign.key  $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        echo '________________________________________________________________________________________________'
+        run: echo -n "${{secrets.COSIGN_PASSWORD}}" | cosign sign --key /tmp/cosign.key $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        #run: echo -n "${{secrets.COSIGN_PASSWORD}}" | cosign sign --key /tmp/cosign.key  058625519174.dkr.ecr.us-east-1.amazonaws.com/example-eks:latest
