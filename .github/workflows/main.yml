@@ -62,16 +62,16 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./app
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
     
-    - name: Sign the image with cosign
+    - name: place the cosign private key in a file
+      env:
+        COSIGN_KEY: ${{secrets.COSIGN_KEY}}
+
+      run: 'echo "$COSIGN_KEY" > /tmp/cosign.key'
+      #shell: bash
+        
+    - name: Sign the image pushed
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: kitty
+        ECR_REPOSITORY: example-eks
         IMAGE_TAG: latest
-        COSIGN_KEY: ${{secrets.COSIGN_KEY}}
-      run: |
-        'echo "$COSIGN_KEY" > /tmp/cosign.key'
-        echo '________________________________________________________________________________________________'
-        cat /tmp/cosign.key
-        echo '________________________________________________________________________________________________'
-        run: echo -n "${{secrets.COSIGN_PASSWORD}}" | cosign sign --key /tmp/cosign.key $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        #run: echo -n "${{secrets.COSIGN_PASSWORD}}" | cosign sign --key /tmp/cosign.key  058625519174.dkr.ecr.us-east-1.amazonaws.com/example-eks:latest
+      run: echo -n "${{secrets.COSIGN_PASSWORD}}" | cosign sign --key /tmp/cosign.key $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
