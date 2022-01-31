@@ -23,14 +23,9 @@ env:
   #AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  ECR_REPOSITORY: public.ecr.aws/v9f6i2g3
-  IMAGE_TAG: doggy-signed
-  #RELEASE_REVISION: "pr-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.sha }}"
-  AWS_REGION: us-east-1
-  KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA_STAGING }}
-  KUBE_NAMESPACE: kitty
-  
-  #SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}   
+  ECR_REPOSITORY: kitty
+  IMAGE_TAG: latest
+   
 jobs:
   build:
     
@@ -59,10 +54,8 @@ jobs:
 
     - name: Build, tag, push image to Amazon ECR
       env:
-        #ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REGISTRY: public.ecr.aws/v9f6i2g3
-        ECR_REPOSITORY: doggy
-        IMAGE_TAG: doggy-signed
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        
       run: |
         
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./app
@@ -71,25 +64,28 @@ jobs:
     - name: sign with cosign
       env:
         COSIGN_KEY: ${{secrets.COSIGN_KEY}}
-        #ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REGISTRY: public.ecr.aws/v9f6i2g3/doggy
-        IMAGE_TAG: doggy-signed
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: kitty
+        IMAGE_TAG: latest
 
       run: |
         echo "$COSIGN_KEY" > /tmp/cosign.key
         cat /tmp/cosign.key
         echo -n "${{secrets.COSIGN_PASSWORD}}" | cosign sign --key /tmp/cosign.key $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
   
-    - name: Deploy to Kubernetes cluster                                                                            
-      uses: kodermax/kubectl-aws-eks@master                                                                         
-      env:                                                                                                          
-        RELEASE_IMAGE: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
-      with:                                                                                                         
-        args: set image deployment/kitty app=${{ env.RELEASE_IMAGE }} --record -n $KUBE_NAMESPACE   
+    - name: deploy to cluster
+      uses: kodermax/kubectl-aws-eks@master
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA_STAGING }}
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: kitty
+        IMAGE_TAG: latest
+      with:
+        args: set image deployment/$ECR_REPOSITORY $ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         
     - name: verify deployment
       uses: kodermax/kubectl-aws-eks@master
       env:
-        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA_STAGING }}
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
-        args: rollout status deployment/doggy-signed
+        args: rollout status deployment/my-app
