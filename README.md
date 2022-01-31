@@ -1,11 +1,12 @@
 # A fun-filled weekend exploring the Kubernetes Admission Controller!
 ![image](https://user-images.githubusercontent.com/4404271/151740166-10bdef5e-a98c-4a2b-a104-4ff79756b209.png)
 
-## Supply Chain issues, in your Kubernetes Cluster: that's the problem du jour.
+## Software Supply Chain management in your Kubernetes Cluster is the problem du jour.
 
 But why?
 
-[Software Supply Chain Issues](https://sysdig.com/blog/software-supply-chain-security/) are top of mind because our apps aren't entirely ours anymore - I mean, it's likely only 20% of them, or less, is code we have written.  
+[Software Supply Chain Issues](https://sysdig.com/blog/software-supply-chain-security/) are top of mind because our apps aren't entirely ours anymore - it would not be uncommon to have more 3rd (and 4th and 5th and onwards) party code in your apps than code you have written yourself. 
+[Once study found that the average application includes 118 libraries](https://www.contrastsecurity.com/hubfs/DocumentsPDF/2021-Contrast-Labs-Open-Source-Security-Report.pdf).  
 The other 80% of our apps are from various sources and repos with varying degrees of custody and control. 
 Now, as developers, we can take steps to ensure our source code has some oversight.  
 
