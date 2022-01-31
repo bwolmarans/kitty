@@ -29,13 +29,9 @@ attacks.  After all, if we can control admission into the cluster, it is the las
 
 **Integrity** and **provenance** of container images deployed to a Kubernetes cluster can be ensured via digital signatures. 
 
-**Integrity** means the image has not changed since it was in a known good state, and has not been altered or corrupted.
+## Step 1 of the Challenge
 
-What is **Provenance**? Provenance is a collection of verifiable data about an image. Provenance  includes details such as the digests of the built images, the repository the code came from, and arguments used to deploy it. 
-
-To achieve this, we sign container images after building, and we must verify  the image signatures before deployment
-
-## First, take a look in this Repo at my [Github Actions](https://github.com/bwolmarans/kitty/actions/workflows/main.yml) where I [build my image,push it to ECR, use cosign to Sign it](https://github.com/bwolmarans/kitty/blob/main/.github/workflows/main.yml) 
+Please take a look in this Repo at my [Github Actions](https://github.com/bwolmarans/kitty/actions/workflows/main.yml) where I [build my image,push it to ECR, use cosign to Sign it](https://github.com/bwolmarans/kitty/blob/main/.github/workflows/main.yml) 
 
 ![image](https://user-images.githubusercontent.com/4404271/151818873-7efe2add-930c-4532-8089-82824229af26.png)
 
@@ -55,6 +51,8 @@ And here is what it looks like in the overview:
 
 So as shown below, we can utilize Cosign and Kyverno.  This is the part of the blog where I learn the hard way that Container image signing has been and still is a bit of a gap in the security landscape, and that solutions here are very much in flux.  Pardon the pun.  It seems that the good folks at Docker Content Trust/Notary came out of the gates with v1, but that never really gained traction, and while v2 is out now, there are multiple options floating around including projects including Kyverno, looks very interesting, it’s still in the design phase (AFAIK).
 
+
+## Step 2 and 3 of the Challenge
 So seeing the Cosign project come along as part of the Sigstore initiative, I was interested to take a look at it and see how it works. Sigstore has some really interesting ideas about software transparency logs, but for this blog, I’ll just be looking at the raw image signing process.
 
 As shown below, we can sign, and verify, and use Kyverno manually.
