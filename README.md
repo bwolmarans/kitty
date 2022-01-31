@@ -5,7 +5,7 @@
 
 But why?
 
-Well, this is because our apps aren't entirely ours anymore - I mean, it's likely only 20% of them, or less, is code we have written.  
+[Software Supply Chain Issues](https://sysdig.com/blog/software-supply-chain-security/) are top of mind because our apps aren't entirely ours anymore - I mean, it's likely only 20% of them, or less, is code we have written.  
 The other 80% of our apps are from various sources and repos with varying degrees of custody and control. 
 Now, as developers, we can take steps to ensure our source code has some oversight.  
 
