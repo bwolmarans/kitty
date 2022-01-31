@@ -23,8 +23,8 @@ env:
   #AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  ECR_REPOSITORY: kitty
-  IMAGE_TAG: kitty-signed
+  ECR_REPOSITORY: doggy
+  IMAGE_TAG: doggy-signed
   #RELEASE_REVISION: "pr-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.sha }}"
   AWS_REGION: us-east-1
   KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA_STAGING }}
@@ -70,7 +70,7 @@ jobs:
       env:
         COSIGN_KEY: ${{secrets.COSIGN_KEY}}
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_TAG: kitty-signed
+        IMAGE_TAG: doggy-signed
 
       run: |
         echo "$COSIGN_KEY" > /tmp/cosign.key
@@ -89,4 +89,4 @@ jobs:
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
-        args: rollout status deployment/kitty
+        args: rollout status deployment/doggy-signed
