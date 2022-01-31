@@ -26,7 +26,7 @@ What is **Provenance**? Provenance is a collection of verifiable data about an i
 
 To achieve this, we sign container images after building, and we must verify  the image signatures before deployment
 
-## First, take a look in this Repo at my [Github Actions](https://github.com/bwolmarans/kitty/actions/workflows/main.yml) where I build my image,push it to ECR, use cosign to Sign it.
+## First, take a look in this Repo at my [Github Actions](https://github.com/bwolmarans/kitty/actions/workflows/main.yml) where I [build my image,push it to ECR, use cosign to Sign it](https://github.com/bwolmarans/kitty/blob/main/.github/workflows/main.yml).
 
 ## Second, please join me on my journey to learn and share admission controllers in Kuberntes, and forgive my noob demeanor here, but even though it is January 2022, it turns out some of this is pretty bleeding edge.   This tale is quite something.  Well, it's a dramatic tale of high levels of frustration but balanced by a great deal of learning.
 
