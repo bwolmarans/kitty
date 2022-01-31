@@ -7,8 +7,6 @@ But why?
 
 [Software Supply Chain Issues](https://sysdig.com/blog/software-supply-chain-security/) are top of mind because our apps aren't entirely ours anymore - it would not be uncommon to have more 3rd (and 4th and 5th and onwards) party code in your apps than code you have written yourself. 
 [Once study found that the average application includes 118 libraries](https://www.contrastsecurity.com/hubfs/DocumentsPDF/2021-Contrast-Labs-Open-Source-Security-Report.pdf).  
-The other 80% of our apps are from various sources and repos with varying degrees of custody and control. 
-Now, as developers, we can take steps to ensure our source code has some oversight.  
 
 But what about container respositories themselves, and the moment of truth when we are deploying containers into the cluster in Kubernetes, is there a way to have some semblance of control over that?  
 
