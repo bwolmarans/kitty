@@ -1,4 +1,4 @@
-# A fun-fillwed weekend With Buidling, Signing, and Kubernetes Admission Controller!
+# A fun-fillwed weekend With Building, Signing, and Kubernetes Admission Controller!
 ![image](https://user-images.githubusercontent.com/4404271/151740166-10bdef5e-a98c-4a2b-a104-4ff79756b209.png)
 
 ## Supply Chain issues, in your Kubernetes Cluster: that's the problem du jour.
