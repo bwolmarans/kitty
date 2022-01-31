@@ -72,25 +72,33 @@ jobs:
         echo "$COSIGN_KEY" > /tmp/cosign.key
         cat /tmp/cosign.key
         echo -n "${{secrets.COSIGN_PASSWORD}}" | cosign sign --key /tmp/cosign.key $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+    
+    - name: notify Sysdig
+      uses: fjogeleit/http-request-action@master
+      with:
+        url: 'https://ansible.io/api/v2/job_templates/84/launch/'
+        method: 'POST'
+        token: ${{ secrets.SYSDIG_API_TOKEN }}
+        password: ${{ secrets.AWX_PASSWORD }}
   
-    - name: deploy to cluster
-      uses: kodermax/kubectl-aws-eks@master
-      env:
-        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA_STAGING }}
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: kitty
-        IMAGE_TAG: latest
-        RELEASE_IMAGE: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
+    #- name: deploy to cluster
+    #  uses: kodermax/kubectl-aws-eks@master
+    #  env:
+    #    KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA_STAGING }}
+    #    ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    #    ECR_REPOSITORY: kitty
+    #    IMAGE_TAG: latest
+    #    RELEASE_IMAGE: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
         
-      with:
-        #args: set image deployment/$ECR_REPOSITORY $ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        #args: set image deployment/kitty
-        args: set image deployment/my-pod app=${{ env.RELEASE_IMAGE }} --record -n kitty   
+    #  with:
+    #    #args: set image deployment/$ECR_REPOSITORY $ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+    #    #args: set image deployment/kitty
+    #    args: set image deployment/my-pod app=${{ env.RELEASE_IMAGE }} --record -n kitty   
 
-    - name: verify deployment
-      uses: kodermax/kubectl-aws-eks@master
-      env:
-        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-      with:
-        args: rollout status deploy my-pod -n kitty 
-      #args: rollout status deployment/kitty
+    #- name: verify deployment
+    #  uses: kodermax/kubectl-aws-eks@master
+    #  env:
+    #    KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+    #  with:
+    #    args: rollout status deploy my-pod -n kitty 
+    #  #args: rollout status deployment/kitty
