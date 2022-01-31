@@ -14,6 +14,17 @@ Every organization has policies. Some exist to meet legal or governance goals, w
 
 Kubernetes allows decoupling policy decisions from the inner workings of the API Server by means of admission controller webhooks, which are executed whenever a resource is created, updated or deleted.
 
+# Admission Controllers Overview
+
+These are very useful, and Sysdig has one already as shown here
+:+1: This PR looks great - it's ready to merge! :shipit:
+
+![image](https://user-images.githubusercontent.com/4404271/151738456-2c55a5d7-386e-4626-a16a-a8468eb1eda4.png)
+
+And here is what it looks like in the overview:
+
+![image](https://user-images.githubusercontent.com/4404271/151739851-5978365e-ff7a-499d-857f-b04044e13b74.png)
+
 # The Challenge
 
 So to write this blog, I was given some great guidelines, a challenge to embark on:
@@ -28,6 +39,8 @@ attacks.  After all, if we can control admission into the cluster, it is the las
 
 **Integrity** and **provenance** of container images deployed to a Kubernetes cluster can be ensured via digital signatures. 
 
+
+
 ## Step 1 of the Challenge
 Sign and publish a container image to an OCI registry
 
@@ -41,19 +54,7 @@ Demonstrate how the signature verification is performed in the cluster
 
 *TLDR; I look forward (very, very much) to the day when hopefully soon, image signing and selectively admitting images based on their signing can be as smooth as what we already see today in Admission Controllers such as the one from Sysdig: 
 
-:+1: This PR looks great - it's ready to merge! :shipit:
-
-![image](https://user-images.githubusercontent.com/4404271/151738456-2c55a5d7-386e-4626-a16a-a8468eb1eda4.png)
-
-And here is what it looks like in the overview:
-
-![image](https://user-images.githubusercontent.com/4404271/151739851-5978365e-ff7a-499d-857f-b04044e13b74.png)
-
 So as shown below, we can utilize Cosign and Kyverno.  This is the part of the blog where I learn the hard way that Container image signing has been and still is a bit of a gap in the security landscape, and that solutions here are very much in flux.  Pardon the pun.  It seems that the good folks at Docker Content Trust/Notary came out of the gates with v1, but that never really gained traction, and while v2 is out now, there are multiple options floating around including projects including Kyverno, looks very interesting, it’s still in the design phase (AFAIK).
-
-
-## Step 2 of the Challenge
-Demonstrate how the signature verification is performed in the cluster
 
 The Cosign project is part of the Sigstore initiative, so I was interested to take a look at it and see how it works. Sigstore has interesting ideas about software transparency logs, but for this blog, I’ll just be looking at the raw image signing process.
 
