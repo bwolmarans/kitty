@@ -29,7 +29,7 @@ env:
   AWS_REGION: us-east-1
   KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA_STAGING }}
   KUBE_NAMESPACE: kitty
-  ECR_REPOSITORY: kitty
+  
   #SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}   
 jobs:
   build:
