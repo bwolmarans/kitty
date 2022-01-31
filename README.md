@@ -1,4 +1,4 @@
-# Kubernetes Admission Controller Fun
+# A fun-fillwed weekend With Buidling, Signing, and Kubernetes Admission Controller!
 ![image](https://user-images.githubusercontent.com/4404271/151740166-10bdef5e-a98c-4a2b-a104-4ff79756b209.png)
 
 ## Supply Chain issues, in your Kubernetes Cluster: that's the problem du jour.
@@ -11,6 +11,9 @@ Now, as developers, we can take steps to ensure our source code has some oversig
 
 But what about container respositories themselves, and the moment of truth when we are deploying containers into the cluster in Kubernetes, is there a way to have some semblance of control over that?  
 
+Every organization has policies. Some exist to meet legal or governance goals, while others may help ensure best practices and conventions. Approaching ensuring compliance manually would be prone to the usual basket of human-error issues and frustrations. If we can automate policy enforcement into the deployment flow, we could achieve consistency, increase development efficiency through immediate feedback, and be more agile by giving developers the freedom to operate independently within a structure of compliance.
+
+Kubernetes allows decoupling policy decisions from the inner workings of the API Server by means of admission controller webhooks, which are executed whenever a resource is created, updated or deleted.
 Enter the **Kubernetes Admmission Controller**, a relatively new concept that has come under the spotlight recently due in no small part to the urgency around supply chain attacks.  After all, if we can control admission into the cluster, it is the last line of defense.
 
 **Integrity** and **provenance** of container images deployed to a Kubernetes cluster can be ensured via digital signatures. 
@@ -54,5 +57,7 @@ But actually getting a single Kyverno policy to Audit or Enforce  in multiple na
 Kybverno is on version 1.5.  Hopping on the Kyverno slack channel (a very helpful community) I was told that 1.6 will have better namespace support, but I wasn't brave enough to try 1.6 because it wasn't released yet, and honestly I would need more time than this weekend to test this out.
 
 ![image](https://user-images.githubusercontent.com/4404271/151742099-841d4806-6530-4401-a497-20f2072f4c79.png)
+
+I also tried [Gatekeeper](https://github.com/open-policy-agent/gatekeeper) the OPA 
 
 
