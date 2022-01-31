@@ -54,12 +54,15 @@ So as shown below, we can utilize Cosign and Kyverno.  This is the part of the b
 ## Step 2 and 3 of the Challenge
 So seeing the Cosign project come along as part of the Sigstore initiative, I was interested to take a look at it and see how it works. Sigstore has some really interesting ideas about software transparency logs, but for this blog, I’ll just be looking at the raw image signing process.
 
-As shown below, we can sign, and verify, and use Kyverno manually.
-But actually getting a single Kyverno policy to Audit or Enforce  in multiple namespaces reliably?  I don't think we're there yet.  I'm quite sure of it, as shown by my flow below.
+As shown below, we can *sign*, and verify, and use *Kyverno* to verify signed images *in the cluster*.
+
+![doggy2](https://user-images.githubusercontent.com/4404271/151875416-e84f53bb-487d-47b0-b778-94841f25730a.gif)
+
+But actually getting a single Kyverno policy to Audit or Enforce in multiple namespaces reliably?  I don't think we're there yet.  I'm quite sure of it, as shown by my flow below.
 
 ![kyverno](https://i.imgur.com/5r7JOIu.gif)
 
-Kybverno is on version 1.5.  Hopping on the Kyverno slack channel (a very helpful community) I was told that 1.6 will have better namespace support, but I wasn't brave enough to try 1.6 because it wasn't released yet, and honestly I would need more time than this weekend to test this out.
+Kyverno is on version 1.5.  Hopping on the Kyverno slack channel (a very helpful community) I was told that 1.6 will have better namespace support, but I wasn't brave enough to try 1.6 because it wasn't released yet, and honestly I would need more time than this weekend to test this out.
 
 ![image](https://user-images.githubusercontent.com/4404271/151742099-841d4806-6530-4401-a497-20f2072f4c79.png)
 
