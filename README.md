@@ -63,17 +63,17 @@ As shown below, we can *sign*, and verify, and use *Kyverno* to verify signed im
 ![doggy2](https://user-images.githubusercontent.com/4404271/151875416-e84f53bb-487d-47b0-b778-94841f25730a.gif)
 
 ## Step 3 of the Challenge
-Demonstrate how the signature verification is performed in the cluster
+Block signed images in a specific namespace, allow but warn on other namespaces
 
-But actually getting a single Kyverno policy to Audit or Enforce in multiple namespaces reliably?  I don't think we're there yet.  I'm quite sure of it, as shown by my flow below.
+This one I struggled with. A Kyverno policy can only Audit or Enforce, but not on multiple namespaces at the same time. I don't think we're there yet, as shown by my demonstration below.
 
 ![kyverno](https://i.imgur.com/5r7JOIu.gif)
 
-I think this is because I may need a different tool than Kyverno.  Kyverno is on version 1.5.  Hopping on the Kyverno slack channel (a very helpful community) I was told that 1.6 will have better namespace support, but I wasn't brave enough to try 1.6 because it wasn't released yet, and honestly I would need more time than this weekend to test this out.
+Hopping on the Kyverno slack channel (a very helpful community) I was told that 1.6 will have per-namespace actions support, but I wasn't brave enough to try 1.6 because it wasn't released yet, and honestly I would need more time than this weekend to test this out.
 
 ![image](https://user-images.githubusercontent.com/4404271/151742099-841d4806-6530-4401-a497-20f2072f4c79.png)
 
-I also tried [Gatekeeper](https://github.com/open-policy-agent/gatekeeper) the mutating webhook ( can we say Admissions Controller? ) for [OPA](https://github.com/open-policy-agent/opa) but even though OPA is a Graduated CNCF project, the examples in their repo were more basic, focusing on resource limits and avoiding duplicates; I couldn't find any good examples of using Gatekeeper for verification of signed images.  What's worse is installing Gatekeeper failed because I had previously intalled Kyverno, and Gatekeeper actually uses Kyverno under the hood.  Simply un-installing Kyverno manually or via the Helm charts didn't work.  But after I posted some questions on the OPA Slack channel with my logs, the community came to my rescue and helped my manually install the mutating webooks that my original Kyverno install left behind!  After that I was able to get Gatekeepr installed, but by now it was 8PM on Sunday night and I was out of time.
+I also tried [Gatekeeper](https://github.com/open-policy-agent/gatekeeper) for [OPA](https://github.com/open-policy-agent/opa) but I couldn't find any good examples of using Gatekeeper for verification of signed images.  What's worse is installing Gatekeeper failed because I had previously intalled Kyverno, and Gatekeeper actually uses Kyverno under the hood.  Simply un-installing Kyverno manually or via the Helm charts didn't work.  But after I posted some questions on the OPA Slack channel with my logs, the community came to my rescue and helped my manually install the mutating webooks that my original Kyverno install left behind!  After that I was able to get Gatekeepr installed, but by now it was 8PM on Sunday night and I was out of time.
 
 ## Step 4 of the Challenge
 Notify of blocked or noncompliant images in Sysdig events UI
