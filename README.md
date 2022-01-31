@@ -1,4 +1,6 @@
 # What's the problem? 
+![image](https://user-images.githubusercontent.com/4404271/151739357-36e75897-4ba6-4582-8d3f-4ec16930faec.png)
+
 ## Supply Chain issues, in your Kubernetes Cluster: that's the problem.
 
 But why?
