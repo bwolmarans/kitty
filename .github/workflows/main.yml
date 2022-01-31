@@ -1,4 +1,6 @@
-# build.yml
+# build, push, sign, and deploy to the cluster... 
+# todo: would like to get kyverno or gatekeeper working properly in here at some point to verify the signature before deploying
+#
 on:
   pull_request:
     paths:
@@ -55,9 +57,6 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         
       run: |
-        echo '__________________________________________________________________________'
-        echo $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG 
-        echo '__________________________________________________________________________'
         
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./app
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
@@ -73,3 +72,20 @@ jobs:
         echo "$COSIGN_KEY" > /tmp/cosign.key
         cat /tmp/cosign.key
         echo -n "${{secrets.COSIGN_PASSWORD}}" | cosign sign --key /tmp/cosign.key $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+  
+    - name: deploy to cluster
+      uses: kodermax/kubectl-aws-eks@master
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA_STAGING }}
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: kitty
+        IMAGE_TAG: latest
+      with:
+        args: set image deployment/$ECR_REPOSITORY $ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        
+    - name: verify deployment
+      uses: kodermax/kubectl-aws-eks@master
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      with:
+        args: rollout status deployment/my-app
