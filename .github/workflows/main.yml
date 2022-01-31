@@ -70,7 +70,6 @@ jobs:
       env:
         COSIGN_KEY: ${{secrets.COSIGN_KEY}}
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: kitty
         IMAGE_TAG: kitty-signed
 
       run: |
