@@ -15,6 +15,15 @@ Every organization has policies. Some exist to meet legal or governance goals, w
 
 Kubernetes allows decoupling policy decisions from the inner workings of the API Server by means of admission controller webhooks, which are executed whenever a resource is created, updated or deleted.
 
+# The Challenge
+
+So to write this blog, I was given some great guidelines, a challenge to embark on:
+
+1. Sign and publish a container image to an OCI registry
+2. Demonstrate how the signature verification is performed in the cluster
+3. Block signed images in a specific namespace, allow but warn on other namespaces
+4. Notify of blocked or noncompliant images in Sysdig events UI
+
 Enter the **Kubernetes Admmission Controller**, a relatively new concept that has come under the spotlight recently due in no small part to the urgency around supply chain 
 attacks.  After all, if we can control admission into the cluster, it is the last line of defense.
 
@@ -47,16 +56,6 @@ And here is what it looks like in the overview:
 So as shown below, we can utilize Cosign and Kyverno.  This is the part of the blog where I learn the hard way that Container image signing has been and still is a bit of a gap in the security landscape, and that solutions here are very much in flux.  Pardon the pun.  It seems that the good folks at Docker Content Trust/Notary came out of the gates with v1, but that never really gained traction, and while v2 is out now, there are multiple options floating around including projects including Kyverno, looks very interesting, it’s still in the design phase (AFAIK).
 
 So seeing the Cosign project come along as part of the Sigstore initiative, I was interested to take a look at it and see how it works. Sigstore has some really interesting ideas about software transparency logs, but for this blog, I’ll just be looking at the raw image signing process.
-
-# The Challenge
-
-So to write this blog, I was given some great guidelines, a challenge to embark on:
-
-1. Sign and publish a container image to an OCI registry
-2. Demonstrate how the signature verification is performed in the cluster
-3. Block signed images in a specific namespace, allow but warn on other namespaces
-4. Notify of blocked or noncompliant images in Sysdig events UI
-
 
 As shown below, we can sign, and verify, and use Kyverno manually.
 But actually getting a single Kyverno policy to Audit or Enforce  in multiple namespaces reliably?  I don't think we're there yet.  I'm quite sure of it, as shown by my flow below.
