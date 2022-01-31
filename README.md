@@ -36,5 +36,23 @@ So as shown below, we can utilize Cosign and Kyverno.  This is the part of the b
 
 So seeing the Cosign project come along as part of the Sigstore initiative, I was interested to take a look at it and see how it works. Sigstore has some really interesting ideas about software transparency logs, but for this blog, I’ll just be looking at the raw image signing process.
 
+# The Challenge
+
+So to write this blog, I was given some great guidelines, a challenge to embark on:
+
+1. Sign and publish a container image to an OCI registry
+2. Demonstrate how the signature verification is performed in the cluster
+3. Block signed images in a specific namespace, allow but warn on other namespaces
+4. Notify of blocked or noncompliant images in Sysdig events UI
+
+
+As shown below, we can sign, and verify, and use Kyverno manually.
+But actually getting a single Kyverno policy to Audit or Enforce  in multiple namespaces reliably?  I don't think we're there yet.  I'm quite sure of it, as shown by my flow below.
+
 ![kyverno](https://i.imgur.com/5r7JOIu.gif)
+
+Kybverno is on version 1.5.  Hopping on the Kyverno slack channel (a very helpful community) I was told that 1.6 will have better namespace support, but I wasn't brave enough to try 1.6 because it wasn't released yet, and honestly I would need more time than this weekend to test this out.
+
+![image](https://user-images.githubusercontent.com/4404271/151742099-841d4806-6530-4401-a497-20f2072f4c79.png)
+
 
