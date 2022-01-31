@@ -30,12 +30,14 @@ attacks.  After all, if we can control admission into the cluster, it is the las
 
 ## Step 1 of the Challenge
 
-Please take a look in this Repo at my [Github Actions](https://github.com/bwolmarans/kitty/actions/workflows/main.yml) where I [build my image,push it to ECR, use cosign to Sign it](https://github.com/bwolmarans/kitty/blob/main/.github/workflows/main.yml) 
+Please take a look in this repo at my [Github Actions](https://github.com/bwolmarans/kitty/actions/workflows/main.yml) where I [build my image,push it to ECR, use cosign to Sign it](https://github.com/bwolmarans/kitty/blob/main/.github/workflows/main.yml) 
 
 ![image](https://user-images.githubusercontent.com/4404271/151818873-7efe2add-930c-4532-8089-82824229af26.png)
 
 
-## Second, please join me on my journey to learn and share admission controllers in Kuberntes, and forgive my noob demeanor here, but even though it is January 2022, it turns out some of this is pretty bleeding edge.   This tale is quite something.  Well, it's a dramatic tale of high levels of frustration but balanced by a great deal of learning.
+## Second
+
+*Please join me on my journey to learn and share admission controllers in Kuberntes, and forgive my noob demeanor here, but even though it is January 2022, it turns out some of this is pretty bleeding edge.   This tale is quite something.  Well, it's a dramatic tale of high levels of frustration but balanced by a great deal of learning.
 
 
 ## TLDR; I look forward (very, very much) to the day when hopefully soon, image signing and selectively admitting images based on their signing can be as smooth as what we already see today in Admission Controllers such as the one from Sysdig: 
