@@ -1,7 +1,7 @@
-# What's the problem? 
+# Kubernetes Admission Controller Fun
 ![image](https://user-images.githubusercontent.com/4404271/151740166-10bdef5e-a98c-4a2b-a104-4ff79756b209.png)
 
-## Supply Chain issues, in your Kubernetes Cluster: that's the problem.
+## Supply Chain issues, in your Kubernetes Cluster: that's the problem du jour.
 
 But why?
 
