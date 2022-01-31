@@ -85,12 +85,12 @@ jobs:
       with:
         #args: set image deployment/$ECR_REPOSITORY $ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         #args: set image deployment/kitty
-        args: set image deployment/my-pod app=${{ env.RELEASE_IMAGE }} --record -n default   
+        args: set image deployment/my-pod app=${{ env.RELEASE_IMAGE }} --record -n kitty   
 
     - name: verify deployment
       uses: kodermax/kubectl-aws-eks@master
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
-        args: rollout status deploy my-pod -n default 
+        args: rollout status deploy my-pod -n kitty 
       #args: rollout status deployment/kitty
