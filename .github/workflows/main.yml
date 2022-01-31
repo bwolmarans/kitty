@@ -84,8 +84,9 @@ jobs:
         method: 'POST'
         bearerToken: ${{ secrets.SYSDIG_API_TOKEN }}
         data: $POST_DATA
+    
     - name: Show Response
-    run: echo ${{ steps.myRequest.outputs.response }}
+      run: echo ${{ steps.myRequest.outputs.response }}
         
     #- name: deploy to cluster
     #  uses: kodermax/kubectl-aws-eks@master
