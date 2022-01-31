@@ -1,5 +1,5 @@
 # What's the problem? 
-https://i.imgur.com/LSkx8GE.png
+![image](https://user-images.githubusercontent.com/4404271/151740166-10bdef5e-a98c-4a2b-a104-4ff79756b209.png)
 
 ## Supply Chain issues, in your Kubernetes Cluster: that's the problem.
 
