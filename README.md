@@ -1,4 +1,4 @@
-# A fun-filled weekend exploring the Kubernetes Admission Controller!
+# Exploring the Kubernetes Admission Controller
 ![image](https://user-images.githubusercontent.com/4404271/151740166-10bdef5e-a98c-4a2b-a104-4ff79756b209.png)
 
 ## Software Supply Chain management in your Kubernetes Cluster is the problem du jour.
