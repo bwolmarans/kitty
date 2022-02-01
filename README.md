@@ -39,8 +39,6 @@ attacks.  After all, if we can control admission into the cluster, it is the las
 
 **Integrity** and **provenance** of container images deployed to a Kubernetes cluster can be ensured via digital signatures. 
 
-
-
 ## Step 1 of the Challenge
 Sign and publish a container image to an OCI registry
 
@@ -65,7 +63,10 @@ As shown below, we can *sign*, and verify, and use *Kyverno* to verify signed im
 ## Step 3 of the Challenge
 Block signed images in a specific namespace, allow but warn on other namespaces
 
-This one I struggled with. A Kyverno policy can only Audit or Enforce, but not on multiple namespaces at the same time. I don't think we're there yet, as shown by my demonstration below.
+Here is where I struggeled.
+
+A Kyverno policy can only Audit or Enforce, but not on multiple namespaces at the same time. I don't think we're there yet, as shown by my demonstration below.
+So I tried swapping betweed Red and Blue namespaces, with two different Kyverno policies, but as you can see in this screen capture below, it didn't really work.
 
 ![kyverno](https://i.imgur.com/5r7JOIu.gif)
 
