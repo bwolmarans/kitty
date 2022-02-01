@@ -62,6 +62,7 @@ As shown below, we can *sign*, and verify, and use *Kyverno* to verify signed im
 
 ## Step 3 of the Challenge
 Block signed images in a specific namespace, allow but warn on other namespaces
+*Big Assumption: I am making the assumption the intent is not to Block signed images, but to actually Allow signed images, as that would be more logical
 
 Here is where I struggeled.
 
@@ -76,7 +77,7 @@ Hopping on the Kyverno slack channel (a very helpful community) I was told that 
 
 ![image](https://user-images.githubusercontent.com/4404271/151896211-dd07c587-180a-4fda-a429-387d3ea08aad.png)
 
-So I switched between namespace, and sort of got it to work as shown below in Step 4.  
+So I switched between namespace, and, as of VERY RECENTLY managed to meet the requirements, in a fashion, as shown below in Step 4.  
 
 
 I also tried [Gatekeeper](https://github.com/open-policy-agent/gatekeeper) for [OPA](https://github.com/open-policy-agent/opa) but I couldn't find any good examples of using Gatekeeper for verification of signed images.  What's worse is installing Gatekeeper failed because I had previously intalled Kyverno, and Gatekeeper actually uses Kyverno under the hood.  Simply un-installing Kyverno manually or via the Helm charts didn't work.  But after I posted some questions on the OPA Slack channel with my logs, the community came to my rescue and helped my manually install the mutating webooks that my original Kyverno install left behind!  After that I was able to get Gatekeepr installed, but by now it was 8PM on Sunday night and I was out of time.
@@ -89,7 +90,7 @@ Notify of blocked or noncompliant images in Sysdig events UI
 Due to deadlines, and other commitments, while I  made an effort to get this part into my github actions, but had to settle for a bash script for the time being.  
 You can see my script in this repo here: [sysdig-interview.sh](https://github.com/bwolmarans/kitty/blob/main/sysdig-interview.sh)
 
-![good-doggy](https://user-images.githubusercontent.com/4404271/151894057-aa24522a-22df-4be6-81c6-b728321e0ce4.gif)
+![doggy4](https://user-images.githubusercontent.com/4404271/151902017-6397672d-2acc-4a72-8264-b30c3af6714c.gif)
 
 
 And here is what it looks like! Notice we are blocking the doggy-unsigned image.  
