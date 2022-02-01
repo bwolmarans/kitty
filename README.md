@@ -31,7 +31,7 @@ So to write this blog, I was given some great guidelines, a challenge to embark 
 
 1. Sign and publish a container image to an OCI registry
 2. Demonstrate how the signature verification is performed in the cluster
-3. Block signed images in a specific namespace, allow but warn on other namespaces
+3. Block signed images in a specific namespace, allow but warn on other namespaces *Big Assumption: Allow signed images in a specific ns, not block
 4. Notify of blocked or noncompliant images in Sysdig events UI
 
 Enter the **Kubernetes Admmission Controller**, a relatively new concept that has come under the spotlight recently due in no small part to the urgency around supply chain 
@@ -75,6 +75,8 @@ Hopping on the Kyverno slack channel (a very helpful community) I was told that 
 ![image](https://user-images.githubusercontent.com/4404271/151742099-841d4806-6530-4401-a497-20f2072f4c79.png)
 
 ![image](https://user-images.githubusercontent.com/4404271/151896211-dd07c587-180a-4fda-a429-387d3ea08aad.png)
+
+So I switched between namespace, and sort of got it to work as shown below in Step 4.  
 
 
 I also tried [Gatekeeper](https://github.com/open-policy-agent/gatekeeper) for [OPA](https://github.com/open-policy-agent/opa) but I couldn't find any good examples of using Gatekeeper for verification of signed images.  What's worse is installing Gatekeeper failed because I had previously intalled Kyverno, and Gatekeeper actually uses Kyverno under the hood.  Simply un-installing Kyverno manually or via the Helm charts didn't work.  But after I posted some questions on the OPA Slack channel with my logs, the community came to my rescue and helped my manually install the mutating webooks that my original Kyverno install left behind!  After that I was able to get Gatekeepr installed, but by now it was 8PM on Sunday night and I was out of time.
