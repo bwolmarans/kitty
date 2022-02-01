@@ -79,7 +79,7 @@ I also tried [Gatekeeper](https://github.com/open-policy-agent/gatekeeper) for [
 Notify of blocked or noncompliant images in Sysdig events UI
 
 Due to deadlines, and other commitments, while I  made an effort to get this part into my github actions, but had to settle for a bash script for the time being.  
-You can see my script in this repo here: 
+You can see my script in this repo here: [sysdig-interview.sh](https://github.com/bwolmarans/kitty/blob/main/sysdig-interview.sh)
 
 ![good-doggy](https://user-images.githubusercontent.com/4404271/151894057-aa24522a-22df-4be6-81c6-b728321e0ce4.gif)
 
