@@ -88,7 +88,7 @@ I should probably have tried Connaiseur, but that's for next weekend!
 Notify of blocked or noncompliant images in Sysdig events UI
 
 Due to deadlines, and other commitments, while I  made an effort to get this part into my github actions, but had to settle for a bash script for the time being.  
-You can see my script in this repo here: [sysdig-interview.sh](https://github.com/bwolmarans/kitty/blob/main/sysdig-interview.sh)
+You can see my script in this repo here: [sysdig-interview.sh](https://github.com/bwolmarans/kitty/blob/main/sysdig-interview.sh) and note you will need to set the environment var SYSDIG_API_TOKEN to your Sysdig API Token.
 
 ![doggy4](https://user-images.githubusercontent.com/4404271/151902017-6397672d-2acc-4a72-8264-b30c3af6714c.gif)
 
