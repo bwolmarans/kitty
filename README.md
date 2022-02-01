@@ -1,4 +1,4 @@
-# Exploring the Kubernetes Admission Controller
+# Enforcing and Observing Signed Deployments with the Kubernetes Admission Controller
 ![image](https://user-images.githubusercontent.com/4404271/151740166-10bdef5e-a98c-4a2b-a104-4ff79756b209.png)
 
 ## Software Supply Chain management in your Kubernetes Cluster is the problem du jour.
@@ -16,7 +16,7 @@ Kubernetes allows decoupling policy decisions from the inner workings of the API
 
 # Admission Controllers Overview
 
-These are very useful, and Sysdig has one already as shown here
+Kubernetes cluster [Admission Controllers](https://sysdig.com/blog/image-scanning-admission-controller/) are very useful, and Sysdig has one already and I tried it (below) 
 :+1: This PR looks great - it's ready to merge! :shipit:
 
 ![image](https://user-images.githubusercontent.com/4404271/151738456-2c55a5d7-386e-4626-a16a-a8468eb1eda4.png)
@@ -74,7 +74,12 @@ Hopping on the Kyverno slack channel (a very helpful community) I was told that 
 
 ![image](https://user-images.githubusercontent.com/4404271/151742099-841d4806-6530-4401-a497-20f2072f4c79.png)
 
+![image](https://user-images.githubusercontent.com/4404271/151896211-dd07c587-180a-4fda-a429-387d3ea08aad.png)
+
+
 I also tried [Gatekeeper](https://github.com/open-policy-agent/gatekeeper) for [OPA](https://github.com/open-policy-agent/opa) but I couldn't find any good examples of using Gatekeeper for verification of signed images.  What's worse is installing Gatekeeper failed because I had previously intalled Kyverno, and Gatekeeper actually uses Kyverno under the hood.  Simply un-installing Kyverno manually or via the Helm charts didn't work.  But after I posted some questions on the OPA Slack channel with my logs, the community came to my rescue and helped my manually install the mutating webooks that my original Kyverno install left behind!  After that I was able to get Gatekeepr installed, but by now it was 8PM on Sunday night and I was out of time.
+
+I should probably have tried Connaiseur, but that's for next weekend!
 
 ## Step 4 of the Challenge
 Notify of blocked or noncompliant images in Sysdig events UI
