@@ -78,6 +78,17 @@ I also tried [Gatekeeper](https://github.com/open-policy-agent/gatekeeper) for [
 ## Step 4 of the Challenge
 Notify of blocked or noncompliant images in Sysdig events UI
 
+Due to deadlines, and other commitments, while I  made an effort to get this part into my github actions, but had to settle for a bash script for the time being.  
+You can see my script in this repo here: 
+
+![good-doggy](https://user-images.githubusercontent.com/4404271/151894057-aa24522a-22df-4be6-81c6-b728321e0ce4.gif)
+
+
+And here is what it looks like! Notice we are blocking the doggy-unsigned image.  
+
+![image](https://user-images.githubusercontent.com/4404271/151893369-febc6567-54a3-474d-924a-43fd45e88d2b.png)
+
+
 ## Conclusion
 
 My conclusion is we need a enterprise, user-friendly solution to this.  I would like to see the [Sysdig Admission Controller](https://docs.sysdig.com/en/docs/sysdig-secure/scanning/admission-controller/) give me a nice way to handle this the same way it support the other features it has today.   
