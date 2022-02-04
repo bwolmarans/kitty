@@ -1,0 +1,2 @@
+- name: kubectl-eks
+  uses: qazz92/kubectl@1.0.3
