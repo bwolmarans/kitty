@@ -68,8 +68,21 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         
+      #run: |
+      #  docker build -t $ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} ./app
+        
       run: |
-        docker build -t $ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} ./app
+        docker buildx create --use
+
+        docker buildx build \                                
+        --cache-from=type=local,src=/tmp/.buildx-cache \   
+        --cache-to=type=local,dest=/tmp/.buildx-cache-new \
+        --tag $ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} \ 
+        ./app
+
+        rm -rf /tmp/.buildx-cache
+        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        
         docker push $ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
     
     - name: sign with cosign
@@ -98,7 +111,7 @@ jobs:
         url: 'https://us2.app.sysdig.com/api/v1/eventsDispatch/ingest'
         method: 'POST'
         bearerToken: ${{ secrets.SYSDIG_API_TOKEN }}
-        data: $POST_DATA
+        data: '$POST_DATA'
         
     - name: Show Response
       run: echo ${{ steps.myRequest.outputs.response }}
