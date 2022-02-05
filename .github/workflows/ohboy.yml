@@ -46,24 +46,14 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
         
-    - name: Deploy
-      uses: safe2008/eks-actions@v0.0.4
-      env:
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_region: us-west-2
-          cluster_name: kitty
-          #ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    - name: deploy to cluster
+      uses: steebchen/kubectl@v2.0.0
+      with: # defaults to latest kubectl binary version
+        config: ${{ secrets.KUBE_CONFIG_DATA_STAGING }}
+        command: set image --record deployment/kitty container=058625519174.dkr.ecr.us-west-2.amazonaws.com/kitty:latest
+    - name: verify deployment
+      uses: steebchen/kubectl@v2.0.0
       with:
-          args: |
-            kubectl set image deployment/kitty.revised -n kitty
-            
-    - name: Sleep for 30 seconds
-      run: sleep 30s
-      shell: bash
-      
-    - name: Check Deployment
-      uses: safe2008/eks-actions@v0.0.4     
-      with:
-          args: |
-            kubectl rollout status deployment/kitty.revised -n kitty
+        config: ${{ secrets.KUBE_CONFIG_DATA_STAGING }}
+        #version: v1.21.0 # specify kubectl binary version explicitly
+        command: rollout status deployment/kitty
