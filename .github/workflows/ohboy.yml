@@ -56,7 +56,7 @@ jobs:
           #ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       with:
           args: |
-            kubectl set image deployment kitty -n kitty
+            kubectl set image deployment/kitty2 -n kitty
             
     - name: Sleep for 30 seconds
       run: sleep 30s
@@ -66,4 +66,4 @@ jobs:
       uses: safe2008/eks-actions@v0.0.4     
       with:
           args: |
-            kubectl rollout status deployment/kitty -n kitty
+            kubectl rollout status deployment/kitty2 -n kitty
