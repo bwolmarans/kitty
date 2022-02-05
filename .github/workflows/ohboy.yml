@@ -47,4 +47,4 @@ jobs:
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA_STAGING }}
       with:
-        args: apply kitty_deployment.yaml
+        args: apply -f kitty_deployment.yaml
