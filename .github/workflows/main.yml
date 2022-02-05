@@ -24,7 +24,7 @@ env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   ECR_REPOSITORY: kitty
-  IMAGE_TAG: latest
+  IMAGE_TAG: kitty-signed
    
 jobs:
   build:
@@ -66,7 +66,7 @@ jobs:
         COSIGN_KEY: ${{secrets.COSIGN_KEY}}
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: kitty
-        IMAGE_TAG: latest
+        IMAGE_TAG: kitty-signed
 
       run: |
         echo "$COSIGN_KEY" > /tmp/cosign.key
