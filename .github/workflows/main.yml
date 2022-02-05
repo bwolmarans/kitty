@@ -1,3 +1,5 @@
+# works
+#
 # build, push, sign, and deploy to the cluster... 
 # todo: would like to get kyverno or gatekeeper working properly in here at some point to verify the signature before deploying
 #
