@@ -95,53 +95,17 @@ jobs:
     - name: Show Response
       run: echo ${{ steps.myRequest.outputs.response }}
         
-    - name: Setting kubeconfig
-      uses: azure/k8s-set-context@v1
+    - name: Deploy
+      uses: safe2008/eks-actions@v0.0.4
+      env:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: us-west-2
+          cluster_name: kitty
       with:
-        method: kubeconfig
-        kubeconfig: ${{ secrets.KUBE_CONFIG_DATA_STAGING }}
-        id: setcontext
-  
-    - name: Print kubectl & kustomize versions
-      run: |-
-        kubectl version
-        kustomize version
-  
-    - name: Kustomize Set Image
-      run: |-
-        cd k8s/overlays/crispr
-        kustomize edit set image kitty=$ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
- 
-    - name: Show kustomization.yaml
-      run: |-
-        cd k8s/overlays/crispr
-        cat kustomization.yaml
- 
-    - name: Deploy to EKS
-      run: |-
-        cd k8s/overlays/crispr
-        kustomize build . | kubectl apply -f -
- 
-    - name: Update Image
-      run: kubectl rollout restart deployment kitty
- 
-    - name: Status
-      run: |-
-        kubectl get pods
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+          args: |
+            kubectl set image deployment kitty-deployment -n kitty
+            $K8S_DEPLOYMENT=$ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} && kubectl rollout status deployment/$K8S_DEPLOYMENT -n $K8S_NAMESPACE
   
   
   
