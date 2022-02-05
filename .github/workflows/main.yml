@@ -92,7 +92,7 @@ jobs:
     - name: notify Sysdig
       id: myRequest
       env:
-        POST_DATA: '{ "events": [ { "timestamp": "${{ steps.whatsthetime.outputs.currentdateandtime }}", "rule": "Check image signature", "priority": "warning", "output": "The image signature verification failed for some image", "source": "Kyverno AC", "tags": [ "foo", "bar" ],      "output_fields": { "registry_name": "${{ env.ECR_REGISTRY }}", "repository_name": "${{ env.ECR_REPOSITORY }}", "image_tag": "${{ env.IMAGE_TAG" }} } } ], "labels": { "label1": "label1-value", "label2": "label2-value" } } '       
+        POST_DATA: '{ "events": [ { "timestamp": "${{ steps.whatsthetime.outputs.currentdateandtime }}", "rule": "Check image signature", "priority": "warning", "output": "The image signature verification failed for $ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}", "source": "Kyverno AC", "tags": [ "foo", "bar" ],      "output_fields": { "registry_name": "${{ env.ECR_REGISTRY }}", "repository_name": "${{ env.ECR_REPOSITORY }}", "image_tag": "${{ env.IMAGE_TAG }}" } } ], "labels": { "label1": "label1-value", "label2": "label2-value" } } '       
       uses: fjogeleit/http-request-action@master
       with:
         url: 'https://us2.app.sysdig.com/api/v1/eventsDispatch/ingest'
