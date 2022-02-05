@@ -71,16 +71,17 @@ jobs:
         cat /tmp/cosign.key
         echo -n "${{secrets.COSIGN_PASSWORD}}" | cosign sign --key /tmp/cosign.key $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
     
-    - name: Set current date as env variable
-      run: echo "NOW::$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV 
+    - name: Set current current time as env variable "currentdateandtime"
+      id: whatsthetime
+      run: echo "::set-output name=currentdateandtime::$(date +'%Y-%m-%dT%H:%M:%S')"
         
-    #- name: Echo current date
-    #  run: echo $NOW
+    - name: Echo current date and time
+      run: echo ${{ steps.whatsthetime.outputs.currentdateandtime }}
         
     - name: notify Sysdig
       id: myRequest
       env:
-        POST_DATA: '{ "events": [ { "timestamp": ${{ env.NOW }}, "rule": "Check image signature", "priority": "warning", "output": "The image signature verification failed for image {{imagename}}", "source": "Kyverno AC", "tags": [ "foo", "bar" ], "output_fields": { "registry_name": ${{ env.ECR_REGISTRY }}, "repository_name": ${{ env.ECR_REPOSITORY }}, "image_tag": ${{ env.IMAGE_TAG }} } } ], "labels": { "label1": "label1-value", "label2": "label2-value" } } '
+        POST_DATA: '{ "events": [ { "timestamp": ${{ steps.whatsthetime.outputs.currentdateandtime }}, "rule": "Check image signature", "priority": "warning", "output": "The image signature verification failed for image {{imagename}}", "source": "Kyverno AC", "tags": [ "foo", "bar" ], "output_fields": { "registry_name": ${{ env.ECR_REGISTRY }}, "repository_name": ${{ env.ECR_REPOSITORY }}, "image_tag": ${{ env.IMAGE_TAG }} } } ], "labels": { "label1": "label1-value", "label2": "label2-value" } } '
         
       uses: fjogeleit/http-request-action@master
       with:
