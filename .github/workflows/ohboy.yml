@@ -42,28 +42,9 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_DEFAULT_REGION }}
 
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
-        
-    - name: Deploy
-      uses: safe2008/eks-actions@v0.0.4
+    - name: Trigger deploy
+      uses: Jberlinsky/kubernetes-action@master
       env:
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_region: us-west-2
-          cluster_name: kitty
-          #ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA_STAGING }}
       with:
-          args: |
-            kubectl set image deployment/kitty2 -n kitty
-            
-    - name: Sleep for 30 seconds
-      run: sleep 30s
-      shell: bash
-      
-    - name: Check Deployment
-      uses: safe2008/eks-actions@v0.0.4     
-      with:
-          args: |
-            kubectl rollout status deployment/kitty2 -n kitty
+        args: apply kitty_deployment.yaml
