@@ -96,16 +96,13 @@ jobs:
         
     - name: Show Response
       run: echo ${{ steps.myRequest.outputs.response }}
-      
-    - uses: Azure/k8s-deploy@v1.4
+    
+    - name: update container in pod kitty 
+      id: kubectl
+      uses: ianbelcher/eks-kubectl-action@master
       with:
-        namespace: "kitty"
-        manifests: |
-          kitty_deployment.yaml
-        kubectl-version: "latest"
-    #- name: Trigger deploy
-    #  uses: Jberlinsky/kubernetes-action@master
-    #  env:
-    #    KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA_STAGING }}
-    #  with:
-    #    args: apply -f kitty_deployment.yaml
+        cluster_name: kitty
+        args: set image --record deployment/kitty kitty=latest
+    
+    - name: Use the output
+      run: echo "{{ steps.kubectl.outputs.kubectl-out }}"
