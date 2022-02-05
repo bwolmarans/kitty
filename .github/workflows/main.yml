@@ -102,7 +102,7 @@ jobs:
       uses: ianbelcher/eks-kubectl-action@master
       with:
         cluster_name: kitty
-        args: set image --record deployment/kitty kitty=latest
+        args: set image --record deployment/kitty kitty=latest -n kitty
     
     - name: Use the output
       run: echo "{{ steps.kubectl.outputs.kubectl-out }}"
