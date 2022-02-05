@@ -18,11 +18,11 @@ name: Build and Push to ECR
 
 # https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html
 env:
-  AWS_DEFAULT_REGION: us-east-1
+  AWS_DEFAULT_REGION: us-west-2
   AWS_DEFAULT_OUTPUT: json
   #AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   ECR_REPOSITORY: kitty
   IMAGE_TAG: kitty-signed
    
@@ -43,7 +43,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
+        aws-region: ${{ env.AWS_REGION }}
 
     - name: Login to Amazon ECR
       id: login-ecr
@@ -58,33 +58,37 @@ jobs:
         
       run: |
         
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./app
+        docker build -t $ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} ./app
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
     
     - name: sign with cosign
       env:
         COSIGN_KEY: ${{secrets.COSIGN_KEY}}
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: kitty
-        IMAGE_TAG: kitty-signed
 
       run: |
         echo "$COSIGN_KEY" > /tmp/cosign.key
         cat /tmp/cosign.key
         echo -n "${{secrets.COSIGN_PASSWORD}}" | cosign sign --key /tmp/cosign.key $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
     
+    - name: Set current date as env variable
+      run: echo "NOW::$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV 
+        
+    #- name: Echo current date
+    #  run: echo $NOW
+        
     - name: notify Sysdig
       id: myRequest
       env:
-        POST_DATA: '{ "events": [ { "timestamp": "2022-01-31T13:44:05+00:00", "rule": "Check image signature", "priority": "warning", "output": "The image signature verification failed for image {{imagename}}", "source": "Connaisseur AC", "tags": [ "foo", "bar" ], "output_fields": { "field1": "value1", "field2": "value2" } } ], "labels": { "label1": "label1-value", "label2": "label2-value" } } '
+        POST_DATA: '{ "events": [ { "timestamp": ${{ env.NOW }}, "rule": "Check image signature", "priority": "warning", "output": "The image signature verification failed for image {{imagename}}", "source": "Kyverno AC", "tags": [ "foo", "bar" ], "output_fields": { "registry_name": ${{ env.ECR_REGISTRY }}, "repository_name": ${{ env.ECR_REPOSITORY }}, "image_tag": ${{ env.IMAGE_TAG }} } } ], "labels": { "label1": "label1-value", "label2": "label2-value" } } '
         
       uses: fjogeleit/http-request-action@master
       with:
         url: 'https://us2.app.sysdig.com/api/v1/eventsDispatch/ingest'
         method: 'POST'
         bearerToken: ${{ secrets.SYSDIG_API_TOKEN }}
-        data: '{ "events": [ { "timestamp": "2022-01-31T13:44:05+00:00", "rule": "Check image signature", "priority": "warning", "output": "The image signature verification failed for image {{imagename}}", "source": "Connaisseur AC", "tags": [ "foo", "bar" ], "output_fields": { "field1": "value1", "field2": "value2" } } ], "labels": { "label1": "label1-value", "label2": "label2-value" } } '
-    
+        data: $POST_DATA
+        
     - name: Show Response
       run: echo ${{ steps.myRequest.outputs.response }}
         
