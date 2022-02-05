@@ -59,7 +59,7 @@ jobs:
       run: |
         
         docker build -t $ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} ./app
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        docker push $ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
     
     - name: sign with cosign
       env:
@@ -69,7 +69,7 @@ jobs:
       run: |
         echo "$COSIGN_KEY" > /tmp/cosign.key
         cat /tmp/cosign.key
-        echo -n "${{secrets.COSIGN_PASSWORD}}" | cosign sign --key /tmp/cosign.key $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        echo -n "${{secrets.COSIGN_PASSWORD}}" | cosign sign --key /tmp/cosign.key $ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
     
     - name: Set current current time as env variable "currentdateandtime"
       id: whatsthetime
@@ -81,7 +81,7 @@ jobs:
     - name: notify Sysdig
       id: myRequest
       env:
-        POST_DATA: '{ "events": [ { "timestamp": ${{ steps.whatsthetime.outputs.currentdateandtime }}, "rule": "Check image signature", "priority": "warning", "output": "The image signature verification failed for image {{imagename}}", "source": "Kyverno AC", "tags": [ "foo", "bar" ], "output_fields": { "registry_name": ${{ env.ECR_REGISTRY }}, "repository_name": ${{ env.ECR_REPOSITORY }}, "image_tag": ${{ env.IMAGE_TAG }} } } ], "labels": { "label1": "label1-value", "label2": "label2-value" } } '
+        POST_DATA: '{ "events": [ { "timestamp": "${{ steps.whatsthetime.outputs.currentdateandtime }}", "rule": "Check image signature", "priority": "warning", "output": "The image signature verification failed for image $ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}", "source": "Kyverno AC", "tags": [ "foo", "bar" ], "output_fields": { "registry_name": "${{ env.ECR_REGISTRY }}", "repository_name": "${{ env.ECR_REPOSITORY }}", "image_tag": "${{ env.IMAGE_TAG" }} } } ], "labels": { "label1": "label1-value", "label2": "label2-value" } } '
         
       uses: fjogeleit/http-request-action@master
       with:
