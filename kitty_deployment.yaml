@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kitty
-  namespace: default
+  namespace: kitty
 spec:
   replicas: 2
   selector:
