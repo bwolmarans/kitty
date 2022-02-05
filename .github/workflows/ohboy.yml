@@ -56,7 +56,7 @@ jobs:
           #ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       with:
           args: |
-            kubectl set image deployment kitty -n kitty
+            kubectl set image deployment/kitty -n kitty
             
     - name: Sleep for 30 seconds
       run: sleep 30s
