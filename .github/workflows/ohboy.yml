@@ -57,4 +57,4 @@ jobs:
       with:
           args: |
             kubectl set image deployment kitty -n kitty
-            $K8S_DEPLOYMENT=$ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} && kubectl rollout status deployment/$K8S_DEPLOYMENT -n kitty
+            kubectl rollout status deployment/kitty -n kitty
