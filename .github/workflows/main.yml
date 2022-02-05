@@ -95,21 +95,24 @@ jobs:
     - name: Show Response
       run: echo ${{ steps.myRequest.outputs.response }}
         
-    - name: deploy to cluster
-      uses: kodermax/kubectl-aws-eks@master
+    - name: Deploy
+      uses: safe2008/eks-actions@v0.0.4
       env:
-        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA_STAGING }}
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: us-west-2
+          cluster_name: kitty
+          #ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       with:
-        #args: set image deployment/$ECR_REPOSITORY $ECR_REPOSITORY=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        #args: set image deployment/kitty
-        args: set image deployment/kitty app=$ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} --record -n default
-
-    - name: verify deployment
-      uses: kodermax/kubectl-aws-eks@master
-      env:
-        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+          args: |
+            kubectl set image deployment/kitty -n kitty
+            
+    - name: Sleep for 30 seconds
+      run: sleep 30s
+      shell: bash
+      
+    - name: Check Deployment
+      uses: safe2008/eks-actions@v0.0.4     
       with:
-        args: rollout status deploy my-pod -n kitty 
-      #args: rollout status deployment/kitty
+          args: |
+            kubectl rollout status deployment/kitty -n kitty
