@@ -2,14 +2,14 @@
 # todo: would like to get kyverno or gatekeeper working properly in here at some point to verify the signature before deploying
 #
 on:
-  pull_request:
-    paths:
-    - app/**
-  push:
-    paths:
-    - app/**
-    branches:         # array of glob patterns matching against refs/heads. Optional; defaults to all
-    - main            # triggers on pushes that contain changes in master
+  #pull_request:
+  #  paths:
+  #  - app/**
+  #push:
+  #  paths:
+  #  - app/**
+  #  branches:         # array of glob patterns matching against refs/heads. Optional; defaults to all
+  #  - main            # triggers on pushes that contain changes in master
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
