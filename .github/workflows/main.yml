@@ -96,10 +96,16 @@ jobs:
         
     - name: Show Response
       run: echo ${{ steps.myRequest.outputs.response }}
-        
-    - name: Trigger deploy
-      uses: Jberlinsky/kubernetes-action@master
-      env:
-        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA_STAGING }}
+      
+    - uses: Azure/k8s-deploy@v1.4
       with:
-        args: apply -f kitty_deployment.yaml
+        namespace: "kitty"
+        manifests: |
+          kitty_deployment.yaml
+        kubectl-version: "latest"
+    #- name: Trigger deploy
+    #  uses: Jberlinsky/kubernetes-action@master
+    #  env:
+    #    KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA_STAGING }}
+    #  with:
+    #    args: apply -f kitty_deployment.yaml
