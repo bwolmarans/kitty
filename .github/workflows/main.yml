@@ -97,10 +97,9 @@ jobs:
     - name: Show Response
       run: echo ${{ steps.myRequest.outputs.response }}
         
-    - name: deploy it!
-      uses: steebchen/kubectl@v2.0.0
-      #wow hope this thing doesnt get hacked
+    - name: Trigger deploy
+      uses: Jberlinsky/kubernetes-action@master
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA_STAGING }}
       with:
-        config: ${{ secrets.KUBE_CONFIG_DATA_STAGING }}
-        #version: v1.21.0 # specify kubectl binary version explicitly
-        command: apply -f kitty_deployment.yaml
+        args: apply -f kitty_deployment.yaml
