@@ -100,7 +100,7 @@ jobs:
         url: 'https://us2.app.sysdig.com/api/v1/eventsDispatch/ingest'
         method: 'POST'
         bearerToken: ${{ secrets.SYSDIG_API_TOKEN }}
-        data: '$POST_DATA'
+        data: '{ "events": [ { "timestamp": "2022-01-31T13:44:05+00:00", "rule": "Check image signature", "priority": "warning", "output": "The image signature verification failed for image {{imagename}}", "source": "Connaisseur AC", "tags": [ "foo", "bar" ], "output_fields": { "field1": "value1", "field2": "value2" } } ], "labels": { "label1": "label1-value", "label2": "label2-value" } }'
         
     - name: Show Response
       run: echo ${{ steps.myRequest.outputs.response }}
