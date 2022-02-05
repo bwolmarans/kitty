@@ -1,4 +1,6 @@
-# works
+# works, even the deployment, at long last
+#
+# it turns out, that whole "set image" thing requires an existing deployment, but then, if the container hans't changed, it still errors out, so better to just apply -f a whole new deployment yaml
 #
 # build, push, sign, and deploy to the cluster... 
 # todo: would like to get kyverno or gatekeeper working properly in here at some point to verify the signature before deploying
@@ -95,24 +97,10 @@ jobs:
     - name: Show Response
       run: echo ${{ steps.myRequest.outputs.response }}
         
-    - name: Deploy
-      uses: safe2008/eks-actions@v0.0.4
-      env:
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_region: us-west-2
-          cluster_name: kitty
-          #ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    - name: deploy it!
+      uses: steebchen/kubectl@v2.0.0
+      #wow hope this thing doesnt get hacked
       with:
-          args: |
-            kubectl set image deployment/kitty -n kitty
-            
-    - name: Sleep for 30 seconds
-      run: sleep 30s
-      shell: bash
-      
-    - name: Check Deployment
-      uses: safe2008/eks-actions@v0.0.4     
-      with:
-          args: |
-            kubectl rollout status deployment/kitty -n kitty
+        config: ${{ secrets.KUBE_CONFIG_DATA_STAGING }}
+        #version: v1.21.0 # specify kubectl binary version explicitly
+        command: apply -f kitty_deployment.yaml
