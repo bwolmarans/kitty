@@ -79,7 +79,7 @@ echo ---   this should be blocked
 echo ---
 echo ---   step 4: lets notify sysdig events consumer if we find failed signature
 if kubectl run doggy-unsigned --image=public.ecr.aws/v9f6i2g3/doggy:doggy-unsigned 2>&1 >/dev/null | grep 'image signature verification failed' > /dev/null; then
-    curl --request POST --url 'https://us2.app.sysdig.com/api/v1/eventsDispatch/ingest' -H "Authorization: Bearer $SYSDIG_API_TOKEN" --data '{ "events": [ { "timestamp": "2022-01-31T13:44:05+00:00", "rule": "Check image signature", "priority": "warning", "output": "The image signature verification failed for image {{doggy-unsigned}}", "source": "Kyverno 1.5 AC", "tags": [ "foo", "bar" ], "output_fields": { "image": "doggy-unsigned", "field2": "value2" } } ], "labels": { "label1": "label1-value", "label2": "label2-value" } }' -v
+    curl --request POST --url 'https://us2.app.sysdig.com/api/v1/eventsDispatch/ingest' -H "Authorization: Bearer $SYSDIG_API_TOKEN" --data '{ "events": [ { "timestamp": "2022-01-31T13:44:05+00:00", "rule": "Check image signature", "priority": "warning", "output": "The image signature verification failed for image {{doggy-unsigned}}", "source": "Kyverno 1.5 AC", "tags": [ "foo", "bar" ], "output_fields": { "image": "doggy-unsigned", "ac": "kyverno" } } ], "labels": { "label1": "label1-value", "label2": "label2-value" } }' -v
 fi
 
 echo ---
