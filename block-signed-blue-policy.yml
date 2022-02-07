@@ -14,7 +14,7 @@ spec:
           kinds:
             - Pod
       verifyImages:
-      - image: "058625519174.dkr.ecr.us-east-1.amazonaws.com/kitty:*"
+      - image: "public.ecr.aws/v9f6i2g3/doggy:*"
         key: |-
           -----BEGIN PUBLIC KEY-----
           MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEvgy2aWB/vYxsZJkDpYNfWRq5tSVe
