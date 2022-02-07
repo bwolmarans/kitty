@@ -1,6 +1,7 @@
 # works, even the deployment, at long last
 #
-# it turns out, that whole "set image" thing requires an existing deployment, but then, if the container hans't changed, it still errors out, so better to just apply -f a whole new deployment yaml
+# it turns out, that whole "set image" thing requires an existing deployment, but then, it seems if the container hasn't changed, 
+# it still errors out, so better to just apply -f a whole new deployment yaml
 #
 # build, push, sign, and deploy to the cluster... 
 # todo: would like to get kyverno or gatekeeper working properly in here at some point to verify the signature before deploying
