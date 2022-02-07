@@ -30,6 +30,7 @@ env:
   #AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   ECR_REPOSITORY: kitty
   IMAGE_TAG: latest
+  CLUSTER_NAME: eksworkshop-eksctl
    
 jobs:
   build:
@@ -98,11 +99,12 @@ jobs:
     - name: Show Response
       run: echo ${{ steps.myRequest.outputs.response }}
     
+    # so let's see if we don't have this pod yet in our cluster - is it "set image" or "apply"
     - name: update container in pod kitty 
       id: kubectl
       uses: ianbelcher/eks-kubectl-action@master
       with:
-        cluster_name: kitty
+        cluster_name: ${{ env.CLUSTER_NAME }}
         args: set image --record deployment/kitty kitty=latest -n kitty
     
     - name: Use the output
