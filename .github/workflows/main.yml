@@ -31,6 +31,7 @@ env:
   ECR_REPOSITORY: kitty
   IMAGE_TAG: latest
   CLUSTER_NAME: eksworkshop-eksctl
+  CLUSTER_NAMESPACE: kitty
    
 jobs:
   build:
@@ -105,7 +106,7 @@ jobs:
       uses: ianbelcher/eks-kubectl-action@master
       with:
         cluster_name: ${{ env.CLUSTER_NAME }}
-        args: set image --record deployment/kitty kitty=latest -n kitty
+        args: set image --record deployment/kitty kitty=latest -n ${{ env.CLUSTER_NAMESPACE }}
     
     - name: Use the output
       run: echo "{{ steps.kubectl.outputs.kubectl-out }}"
