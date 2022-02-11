@@ -210,7 +210,7 @@ read -p "Press enter to continue"
 echo ---
 echo ---   The End
 echo ---
-~$
+
 
 
 
