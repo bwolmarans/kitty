@@ -112,7 +112,10 @@ jobs:
       uses: ianbelcher/eks-kubectl-action@master
       with:
         cluster_name: ${{ env.CLUSTER_NAME }}
-        args: set image --record deployment/kitty kitty=latest -n ${{ env.CLUSTER_NAMESPACE }}
+        # what is the best approach for changes? set image or another apply?
+        # args: set image --record deployment/kitty kitty=latest -n ${{ env.CLUSTER_NAMESPACE }}
+        args: apply -f kitty_deployment.yaml -n ${{ env.CLUSTER_NAMESPACE }}
+        
     
     - name: Use the output
       run: echo "{{ steps.kubectl.outputs.kubectl-out }}"
