@@ -1,8 +1,16 @@
+##############################################################################
+#
+# Title: Little Pipeline
+# ----------------------
+#
+# Purpose: Image Build, Sign, Push to ECR, and Deploy to EKS
+#
+# Requirements / Assumptions:
+# - your cluster and namespace are both existing already
+#
+# Notes: 
 # works, even the deployment, at long last
 #
-
-# 
-# build, push, sign, and deploy to the cluster... 
 # todo: would like to get kyverno or gatekeeper working properly in here at some point to verify the signature before deploying
 #
 on:
@@ -17,10 +25,8 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-
 name: Enchilada
 
-# https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html
 env:
   AWS_DEFAULT_REGION: us-west-2
   AWS_DEFAULT_OUTPUT: json
@@ -98,7 +104,8 @@ jobs:
         
     - name: Show Response
       run: echo ${{ steps.myRequest.outputs.response }}
-    
+      
+      
     # so let's see if we don't have this pod yet in our cluster - is it "set image" or "apply"
     - name: update container in pod kitty 
       id: kubectl
