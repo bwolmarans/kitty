@@ -29,7 +29,7 @@ env:
   #AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   ECR_REPOSITORY: kitty
   IMAGE_TAG: latest
-  CLUSTER_NAME: eksworkshop-eksctl
+  CLUSTER_NAME: eksworkshop
   CLUSTER_NAMESPACE: kitty
    
 jobs:
