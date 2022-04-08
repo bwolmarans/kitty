@@ -28,6 +28,7 @@ on:
 name: Enchilada
 
 env:
+  #these can be configured in Actions Secrets
   AWS_DEFAULT_REGION: us-west-2
   AWS_DEFAULT_OUTPUT: json
   #AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
