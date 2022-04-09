@@ -37,6 +37,7 @@ env:
   IMAGE_TAG: latest
   CLUSTER_NAME: kitty
   CLUSTER_NAMESPACE: kitty
+  
    
 jobs:
   build:
@@ -62,7 +63,7 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v1
       
     - name: debug1
-      run: echo ${{ steps.login-ecr.outputs.registry }}
+      run: echo ${{ steps.login-ecr.outputs.registry }} | sed 's/./& /g'
 
     - name: Install Cosign
       uses: sigstore/cosign-installer@main
