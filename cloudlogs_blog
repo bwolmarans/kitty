@@ -1,0 +1,213 @@
+Battlecard
+Title
+Cloud Log Management
+Count
+Primary (focus) keyword
+cloudtrail vs cloudwatch
+
+29 / 4k / 1k
+Secondary keywords (2~3)
+CloudWatch
+AWS CloudTrail
+Security in the Cloud
+Cloud Journey
+15 / 7k / 13k
+6 / 3k / 4k
+Article goal
+Directed to anybody starting off in AWS, or Google Cloud, or Azure
+Especially relevant to AWS Administrators
+Use case
+Example: https://www.gorillastack.com/blog/real-time-events/cloudtrail-vs-cloudwatch/
+
+
+Call to action
+Enhance your log threat detection with cloud-native tools.  Find tools that feed in your cloud los to provide curated security policies.  Make sure these tools work across multiple clouds so that you don’t have to buy multiple tools.
+Where are we extra-promoting this article
+Reddit r/netsec
+Linkedin cloud groups
+Featured image
+What should the title / featured/social image be?
+Published URL
+tbd
+Author
+Brett Wolmarans
+
+
+Review Log
+Battlecard & TOC review
+Reviewer
+Received on
+Approved on
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Content review
+Reviewer
+Received on
+Approved on
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Graphic resources
+Featured image
+
+
+Social publications
+On release day:
+/r/netsec
+Linkedin Cloud Group
+
+
+Article Outline
+
+
+What are Cloud Logs?	8
+How should you manage your logs?	8
+Best practices	8
+New Challenges	9
+Public Cloud Logging Compared	10
+What is AWS CloudTrail?	10
+What is AWS CloudWatch?	11
+Useful Tools	13
+Conclusions	13
+
+
+What are Cloud Logs?
+What is different about logging in the cloud? The answer is, many things.  We will cover some of the most important differences here, and then dig deeper into a specific example of AWS CloudTrail vs Amazon CloudWatch.
+To define cloud logs, we will start with what cloud logs are not: Cloud logs are not logs from your applications. So if you run an Apache web server in the cloud, and a failed web request is logged to  /var/log/httpd/error_log on the local filesystem, this is not a cloud log. This log entry would happen even if Apache was deployed in a brick-n-mortar environment.
+Cloud logs on the other hand come directly from your cloud IaaS or PaaS services - services that are only found in the cloud. These are true cloud events.
+For example, if you create a new native-service load balancer to scale your Apache web server, the audit log entry for that event is an example of a real cloud log event.  
+The cloud providers even provide virtual machine (VM) instances in the cloud are running the Logging agent
+How should you manage your logs?
+At a high level you have to decide how you are going to implement these three processes:
+Creating logs
+Transmitting logs
+Storing logs
+Best practices 
+Best practices is a big topic. For example if you follow the PCI standard, you have to store logs for at least one year. We don’t have room to cover best practices here, but the folks over at Loggly have a nice list and AWS maintains a list specifically for security events. 
+New Challenges
+The cloud brings with it new challenges:
+Multi-cloud means dealing with different logging specific functionality, and types of logs., We will look closely at these later in this article.  
+Cloud logs can be massive! Even a medium-sized cloud environment may generate millions of log events per day.  Strategies to control costs related to sheer logging volume are one consideration here.
+Security concerns.  Logs are a very valuable target for attackers, either to steal critical information or to find ways to hide their tracks by deleting logs.
+
+
+Public Cloud Logging Compared
+All of the public cloud providers have at least an audit log capability, to log all the changes made in their cloud.  This is the most important log of them all, because without this, you have no paper trail.
+And then, there are many other kinds of logs.  There are logs for virtual machines, security, databases, and many other services.  
+For example all the major cloud providers offer a logging agent for their virtual machines, for example, AWS offers the CloudWatch agent which can be injected into an EC2 instance using the Userdata technique at provisioning time. 
+A sample of the logs available in Google Cloud, Microsoft Azure, and AWS is shown in the following table:
+Service/Cloud
+Google Cloud
+Microsoft Azure
+Amazon Web Services
+Audit logging Service Name
+Cloud Audit Logs
+Azure Activity Logs
+AWS CloudTrail
+Other Logs
+Google Cloud platform logs
+User-written logs
+Component logs.
+Security logs
+Multi-cloud and hybrid-cloud logs
+Log entry structure
+View logs
+Route logs
+Azure Resource logs
+Azure Active Directory Logs and reports
+Virtual machines and cloud services	
+Azure Storage logging
+NSG flow logs
+Application insight logs
+Process data / security alerts
+
+
+VPC Flow Logs
+ELB logs
+S3 bucket logs, CloudFront access logs
+Route 53 query logs, Amazon RDS logs
+AWS WAF Logs
+…and many more!
+
+
+To write in a useful way about all of these would make this blog post hundreds of pages long, so instead, let’s just take a look at two major logs in one of the clouds, in this case, we we will compare and contrast AWS CloudTrail vs Amazon CloudWatch.
+
+AWS CloudTrail vs Amazon CloudWatch
+What is AWS CloudTrail? 
+AWS CloudTrail is an AWS service that helps you enable operational and risk auditing, governance, and compliance of your AWS account. Actions taken by a user, role, or an AWS service are recorded as events in CloudTrail. Events include actions taken in the AWS Management Console, AWS Command Line Interface, and AWS SDKs and APIs.
+CloudTrail is enabled by default on your AWS account. When activity occurs in your AWS account, that activity is recorded in a CloudTrail event. You can easily view recent events in the CloudTrail console by going to Event history. 
+For an ongoing record of activity and events in your AWS account, create a trail.  Or else after 90 days they will be deleted from the default S3 bucket. 
+
+What is Amazon CloudWatch?
+Amazon CloudWatch is not only a performance monitoring service. CloudWatch also includes the capability to detect anomalous behavior, visualize logs, and set alarms, none of this is available out-of-the-box.
+
+Source: https://aws.amazon.com/cloudwatch/
+By default AWS CloudWatch exists to monitor the performance of your AWS resources and applications.  AWS CloudWatch graphs metrics over time, and is not out-of-box a way to get security alerts.  If you want alerts, you have to create your own, based on metrics.  If you want to create an alert for a discrete event, you have to create a non-zero metric and key off of that.
+
+Public S3 Bucket
+Let’s configure CloudWatch to find a simple event: making an S3 bucket public. You can be forgiven if you might think that public s3 bucket mistakes are no longer relevant. But In fact this cloud mistake is still very relevant, in fact there is a really near github repo created just to track widely known public s3 bucket incidents.   Even after this blog post is published, it’s almost certain that somebody somewhere in the world is going to leave critical data in a public S3 bucket, and will get breached, and it won’t be the last time.
+So on with our example. First, we make the bucket public, which thankfully includes a dire warning and a flow that makes you click twice to avoid doing this by mistake:
+
+
+Within a few minutes, this event shows up in CloudTrail:
+"requestParameters": {
+        "publicAccessBlock": "",
+        "bucketName": "brett-public-test-bucket",
+        "PublicAccessBlockConfiguration": {
+            "xmlns": "http://s3.amazonaws.com/doc/2006-03-01/",
+            "RestrictPublicBuckets": false,
+            "BlockPublicPolicy": false,
+            "BlockPublicAcls": false,
+            "IgnorePublicAcls": false
+        },
+
+Here we see“BlockPublicPolicy” and the other parameters being set to “false” that together make this bucket public on the Internet.
+So to find this in CloudWatch, the first step is to configure the Trail to send events to CloudWatch Logs. This is a multi-step process including special IAM policies, and is covered here.
+The next step is to make a Metric Filter. The actual Filter used was: “\”publiclyAccessible\”: true” and all the steps are covered here.
+Useful Tools
+https://github.com/nagwww/s3-leaks
+https://github.com/willh/henry
+https://github.com/cleancloud/s3-public-alerts
+
+https://buckets.grayhatwarfare.com
+Conclusions
+Logging in the cloud needs to be top of mind, and it needs to be done correctly.  It can be quite different than logging in the traditional datacenter, for example, there is usually not one over-arching audit log for the entire datacenter.
+Managing your logs in the cloud is just as important as anything you do in the cloud.   Like anything, If you don’t have a clear understanding, you may run into difficulties quite quickly.  
+Each cloud provider offers many types of logs, but the most important of these is the audit log.
+Parsing this log for security issues is a very good practice.
